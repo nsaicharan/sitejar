@@ -1,16 +1,16 @@
-import Head from 'next/head';
 import Header from './../components/Header';
+import { auth } from './../utils/firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import Bookmarks from '../components/Bookmarks';
+import FrontIntro from '../components/FrontIntro';
 
 export default function Home() {
-  return (
-    <div className="">
-      <Head>
-        <title>Webmark</title>
-        <meta name="description" content="Bookmark pages for later reference" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+  const [user, loading] = useAuthState(auth);
 
-      <Header />
-    </div>
+  return (
+    <>
+      {!user && !loading && <FrontIntro />}
+      {user && <Bookmarks user={user} />}
+    </>
   );
 }

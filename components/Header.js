@@ -19,19 +19,29 @@ function Header() {
   }
 
   return (
-    <header className="container mx-auto px-5">
+    <header>
       <nav className="mt-4 flex justify-between items-center">
         <Link href="/">
-          <a className="text-2xl">Webmark</a>
+          <a className="text-2xl text-slate-900">Webmark</a>
         </Link>
 
-        <button
-          className="py-2 px-4 rounded text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200"
-          onClick={handleAuth}
-          disabled={loading}
-        >
-          {loading ? <Spinner /> : user ? 'Sign Out' : 'Sign In'}
-        </button>
+        <div className="flex gap-5">
+          {user && router.pathname !== '/add' && (
+            <Link href="/add">
+              <a className="inline-block py-2 px-4 rounded text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200">
+                Add a new bookmark
+              </a>
+            </Link>
+          )}
+
+          <button
+            className="py-2 px-4 rounded text-indigo-600 border border-indigo-600 outline-none focus:ring focus:ring-indigo-200"
+            onClick={handleAuth}
+            disabled={loading}
+          >
+            {loading ? <Spinner /> : user ? 'Sign Out' : 'Sign In'}
+          </button>
+        </div>
       </nav>
     </header>
   );
