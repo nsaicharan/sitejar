@@ -19,8 +19,8 @@ function Header() {
   }
 
   return (
-    <header>
-      <nav className="mt-4 flex justify-between items-center">
+    <header className="py-3 shadow-sm border-b border-slate-900/10">
+      <nav className="max-w-7xl mx-auto px-5 flex justify-between items-center">
         <Link href="/">
           <a className="text-2xl text-slate-900">Webmark</a>
         </Link>
@@ -29,7 +29,7 @@ function Header() {
           {user && router.pathname !== '/add' && (
             <Link href="/add">
               <a className="inline-block py-2 px-4 rounded text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200">
-                Add a new bookmark
+                Add a bookmark
               </a>
             </Link>
           )}

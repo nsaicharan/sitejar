@@ -31,7 +31,7 @@ function Add() {
   }
 
   return (
-    <div className="w-full max-w-xl px-4 mx-auto mt-12 mb-8">
+    <div className="w-full max-w-xl px-4 mx-auto">
       <h1 className="mb-8 text-2xl text-slate-900 font-bold">
         Add new bookmark
       </h1>

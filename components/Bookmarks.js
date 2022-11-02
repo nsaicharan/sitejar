@@ -74,11 +74,11 @@ function Bookmarks({ user }) {
     } else {
       return (
         <>
-          <p className="my-4">You currently do not have any saved bookmarks.</p>
+          <p className="my-4">You haven't saved any bookmarks yet.</p>
 
           <Link href="/add">
             <a className="inline-block py-2 px-4 rounded text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200">
-              Add a new bookmark
+              Add your first bookmark
             </a>
           </Link>
         </>
@@ -87,7 +87,7 @@ function Bookmarks({ user }) {
   }
 
   return (
-    <section className="w-full max-w-2xl mx-auto mt-12 mb-8">
+    <section className="w-full max-w-2xl mx-auto self-stretch">
       <h1 className="text-2xl text-slate-900 font-bold">Your bookmarks</h1>
 
       {renderBookmarks()}
