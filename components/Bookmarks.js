@@ -41,7 +41,7 @@ function Bookmarks({ user }) {
 
     if (bookmarks.length > 0) {
       return (
-        <ul class="my-6 space-y-3" role="list">
+        <ul className="my-6 space-y-3" role="list">
           {bookmarks.map((bookmark) => (
             <li
               key={bookmark.id}
@@ -63,9 +63,17 @@ function Bookmarks({ user }) {
                 >
                   Delete
                 </button>
-                <button className="px-1.5 rounded text-sm text-indigo-600 bg-indigo-200">
-                  Edit
-                </button>
+                <Link
+                  href={{
+                    pathname: `/edit/${bookmark.id}`,
+                    query: bookmark,
+                  }}
+                  as={`/edit/${bookmark.id}`}
+                >
+                  <a className="px-1.5 rounded text-sm text-indigo-600 bg-indigo-200">
+                    Edit
+                  </a>
+                </Link>
               </div>
             </li>
           ))}
