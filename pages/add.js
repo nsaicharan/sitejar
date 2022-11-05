@@ -3,14 +3,18 @@ import { signInWithGoogle, auth, db } from './../utils/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
+import Spinner from './../components/Spinner';
 
 function Add() {
   const [existingCategories, setExistingCategories] = useState(['abc', '123']);
   const [user, loading] = useAuthState(auth);
+  const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (isSaving) return;
+    setIsSaving(true);
 
     const { url, category, notes } = Object.fromEntries(new FormData(e.target));
 
@@ -31,7 +35,7 @@ function Add() {
   }
 
   return (
-    <div className="w-full max-w-xl px-4 mx-auto">
+    <div className="w-full max-w-xl mx-auto">
       <h1 className="mb-8 text-2xl text-slate-900 font-bold">
         Add new bookmark
       </h1>
@@ -84,7 +88,7 @@ function Add() {
           </label>
 
           <button className="mt-[6px] py-[9px] px-4 rounded bg-indigo-600 text-white shadow-sm outline-none focus:ring focus:ring-indigo-200">
-            Save
+            {isSaving ? <Spinner /> : 'Save'}
           </button>
         </form>
       )}
