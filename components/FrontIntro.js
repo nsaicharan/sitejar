@@ -5,7 +5,7 @@ function FrontIntro() {
     <section className="m-auto flex items-center gap-10">
       <div className="flex-1">
         <h1 className="text-4xl font-bold text-slate-900">
-          Found an useful site that you might need later, but don't want to
+          Found a useful site that you might need later, but don't want to
           clutter your browser bookmarks?
         </h1>
         <p className="mt-7 text-xl">
@@ -13,10 +13,11 @@ function FrontIntro() {
           browsing and find them later when you actually need it.
         </p>
         <p className="mt-9">
-          <Link href="/add">
-            <a className="my-1 inline-block py-2 px-4 rounded text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200">
-              Start saving now
-            </a>
+          <Link
+            href="/add"
+            className="my-1 inline-block py-2 px-4 rounded text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200"
+          >
+            Start saving now
           </Link>{' '}
           or drag this{' '}
           <a

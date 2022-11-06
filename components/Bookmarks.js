@@ -48,8 +48,11 @@ function Bookmarks({ user }) {
               className="flex flex-col items-start py-3 px-4 shadow space-y-2"
               data-id={bookmark.id}
             >
-              <Link href={`${bookmark.url}`}>
-                <a className="text-blue-500 underline">{bookmark.url}</a>
+              <Link
+                href={`${bookmark.url}`}
+                className="text-blue-500 underline"
+              >
+                {bookmark.url}
               </Link>
 
               {bookmark.notes && <p>{bookmark.notes}</p>}
@@ -69,10 +72,9 @@ function Bookmarks({ user }) {
                     query: bookmark,
                   }}
                   as={`/edit/${bookmark.id}`}
+                  className="px-1.5 rounded text-sm text-indigo-600 bg-indigo-200"
                 >
-                  <a className="px-1.5 rounded text-sm text-indigo-600 bg-indigo-200">
-                    Edit
-                  </a>
+                  Edit
                 </Link>
               </div>
             </li>
@@ -84,10 +86,11 @@ function Bookmarks({ user }) {
         <>
           <p className="my-4">You haven't saved any bookmarks yet.</p>
 
-          <Link href="/add">
-            <a className="inline-block py-2 px-4 rounded text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200">
-              Add your first bookmark
-            </a>
+          <Link
+            href="/add"
+            className="inline-block py-2 px-4 rounded text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200"
+          >
+            Add your first bookmark
           </Link>
         </>
       );

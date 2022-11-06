@@ -1,4 +1,3 @@
-import Header from './../components/Header';
 import { auth } from './../utils/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Bookmarks from '../components/Bookmarks';

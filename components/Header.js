@@ -21,16 +21,17 @@ function Header() {
   return (
     <header className="py-3 shadow-sm border-b border-slate-900/10">
       <nav className="max-w-7xl mx-auto px-5 flex justify-between items-center">
-        <Link href="/">
-          <a className="text-2xl text-slate-900">Webmark</a>
+        <Link href="/" className="text-2xl text-slate-900">
+          Webmark
         </Link>
 
         <div className="flex gap-5">
           {user && router.pathname !== '/add' && (
-            <Link href="/add">
-              <a className="inline-block py-2 px-4 rounded text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200">
-                Add a bookmark
-              </a>
+            <Link
+              href="/add"
+              className="inline-block py-2 px-4 rounded text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200"
+            >
+              Add a bookmark
             </Link>
           )}
 
