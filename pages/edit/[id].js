@@ -6,23 +6,27 @@ import { db } from '../../utils/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Spinner from '../../components/Spinner';
 import { signInWithGoogle } from './../../utils/firebase';
+import Error from 'next/error';
 
 function Edit() {
-  const [existingCategories, setExistingCategories] = useState(['abc', '123']);
   const router = useRouter();
   const { url, notes, category, id } = router.query;
   const [data, setData] = useState({ url, category, notes });
   const [isSaving, setIsSaving] = useState(false);
   const [user, loading] = useAuthState(auth);
+  const [isNotFound, setIsNotFound] = useState(false);
+  const [existingCategories, setExistingCategories] = useState(['abc', '123']);
 
   useEffect(() => {
     if (!url && user) {
       const docRef = doc(db, `users/${user.email}/bookmarks/${id}`);
 
-      getDoc(docRef).then((result) => {
-        const { url, notes, category } = result.data();
-        setData({ url, category, notes });
-      });
+      getDoc(docRef)
+        .then((result) => {
+          const { url, notes, category } = result.data();
+          setData({ url, category, notes });
+        })
+        .catch(() => setIsNotFound(true));
     }
   }, [user]);
 
@@ -45,6 +49,10 @@ function Edit() {
   if (!loading && !user) {
     signInWithGoogle();
     return;
+  }
+
+  if (isNotFound) {
+    return <Error statusCode={404} />;
   }
 
   return (
