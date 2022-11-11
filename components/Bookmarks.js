@@ -13,6 +13,7 @@ import { useState, useEffect } from 'react';
 function Bookmarks({ user }) {
   const [bookmarks, setBookmarks] = useState([]);
   const [fetching, setFetching] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   async function getBookmarks() {
     const collectionRef = collection(db, `users/${user.email}/bookmarks`);
@@ -36,22 +37,29 @@ function Bookmarks({ user }) {
     }
   }
 
+  function handleChange(e) {
+    setSearchTerm(e.target.value.trim().replace(/\s+/g, ' ').toLowerCase());
+  }
+
+  const filteredBookmarks = bookmarks.filter(
+    (b) =>
+      b.url.toLowerCase().includes(searchTerm) ||
+      b.notes.toLowerCase().includes(searchTerm)
+  );
+
   function renderBookmarks() {
     if (fetching) return;
 
     if (bookmarks.length > 0) {
       return (
-        <ul className="my-6 space-y-3" role="list">
-          {bookmarks.map((bookmark) => (
+        <ul className="my-7 space-y-3" role="list">
+          {filteredBookmarks.map((bookmark) => (
             <li
               key={bookmark.id}
               className="flex flex-col items-start py-3 px-4 shadow space-y-2"
               data-id={bookmark.id}
             >
-              <Link
-                href={`${bookmark.url}`}
-                className="text-blue-500 underline"
-              >
+              <Link href={bookmark.url} className="text-blue-500 underline">
                 {bookmark.url}
               </Link>
 
@@ -100,6 +108,15 @@ function Bookmarks({ user }) {
   return (
     <section className="w-full max-w-2xl mx-auto self-stretch">
       <h1 className="text-2xl text-slate-900 font-bold">Your bookmarks</h1>
+
+      <input
+        type="search"
+        className="mt-6 w-full rounded-md border-gray-300 shadow focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        name="url"
+        placeholder="Search..."
+        aria-label="Search"
+        onChange={handleChange}
+      />
 
       {renderBookmarks()}
     </section>
