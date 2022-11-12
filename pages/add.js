@@ -43,11 +43,7 @@ function Add() {
       {loading && <p>Please wait...</p>}
 
       {user && (
-        <form
-          action="/add"
-          className="grid grid-cols-1 gap-6"
-          onSubmit={handleSubmit}
-        >
+        <form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit}>
           <label>
             <span className="text-gray-700">URL</span>
             <input

@@ -60,8 +60,8 @@ function Edit() {
       <h1 className="mb-8 text-2xl text-slate-900 font-bold">Edit bookmark</h1>
 
       <form
-        action="#"
         className="grid grid-cols-1 gap-6"
+        autoFocus
         onSubmit={handleSubmit}
       >
         <label>

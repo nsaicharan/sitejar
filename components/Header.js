@@ -25,18 +25,18 @@ function Header() {
           Webmark
         </Link>
 
-        <div className="flex gap-5">
+        <div className="flex gap-4 md:gap-5">
           {user && router.pathname !== '/add' && (
             <Link
               href="/add"
-              className="inline-block py-2 px-4 rounded text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200"
+              className="inline-block py-2 px-3 rounded text-sm text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200 md:px-4 md:text-base"
             >
-              Add a bookmark
+              Add <span className="sr-only md:not-sr-only">a bookmark</span>
             </Link>
           )}
 
           <button
-            className="py-2 px-4 rounded text-indigo-600 border border-indigo-600 outline-none focus:ring focus:ring-indigo-200"
+            className="py-2 px-3 rounded text-sm text-indigo-600 border border-indigo-600 outline-none focus:ring focus:ring-indigo-200 md:px-4 md:text-base"
             onClick={handleAuth}
             disabled={loading}
           >

@@ -52,7 +52,7 @@ function Bookmarks({ user }) {
 
     if (bookmarks.length > 0) {
       return (
-        <ul className="my-7 space-y-3" role="list">
+        <ul className="mt-7 space-y-3" role="list">
           {filteredBookmarks.map((bookmark) => (
             <li
               key={bookmark.id}
