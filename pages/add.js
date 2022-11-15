@@ -22,10 +22,10 @@ function Add() {
 
     const collectionRef = collection(db, `users/${user.email}/bookmarks`);
     await addDoc(collectionRef, {
-      url,
-      title,
-      category,
-      notes,
+      url: url.trim(),
+      title: title.trim(),
+      category: category.trim(),
+      notes: notes.trim(),
       createdAt: serverTimestamp(),
     });
 

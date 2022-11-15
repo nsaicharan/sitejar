@@ -36,7 +36,13 @@ function Edit() {
     setIsSaving(true);
 
     const docRef = doc(db, `users/${user.email}/bookmarks/${id}`);
-    await setDoc(docRef, data, { merge: true });
+
+    const trimmedData = Object.keys(data).reduce((acc, curr) => {
+      acc[curr] = data[curr] ? data[curr].trim() : '';
+      return acc;
+    }, {});
+
+    await setDoc(docRef, trimmedData, { merge: true });
 
     router.push('/');
   }
