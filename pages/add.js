@@ -16,11 +16,14 @@ function Add() {
     if (isSaving) return;
     setIsSaving(true);
 
-    const { url, category, notes } = Object.fromEntries(new FormData(e.target));
+    const { url, title, category, notes } = Object.fromEntries(
+      new FormData(e.target)
+    );
 
     const collectionRef = collection(db, `users/${user.email}/bookmarks`);
     await addDoc(collectionRef, {
       url,
+      title,
       category,
       notes,
       createdAt: serverTimestamp(),
@@ -45,13 +48,24 @@ function Add() {
       {user && (
         <form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit}>
           <label>
-            <span className="text-gray-700">URL</span>
+            <span className="text-gray-700">
+              URL <span className="text-xs">(required)</span>
+            </span>
             <input
               type="url"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               placeholder="https://example.com"
               name="url"
               required
+            />
+          </label>
+
+          <label>
+            <span className="text-gray-700">Title</span>
+            <input
+              type="text"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              name="title"
             />
           </label>
 

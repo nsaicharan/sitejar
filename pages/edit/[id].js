@@ -10,8 +10,8 @@ import Error from 'next/error';
 
 function Edit() {
   const router = useRouter();
-  const { url, notes, category, id } = router.query;
-  const [data, setData] = useState({ url, category, notes });
+  const { url, title, category, notes, id } = router.query;
+  const [data, setData] = useState({ url, title, category, notes });
   const [isSaving, setIsSaving] = useState(false);
   const [user, loading] = useAuthState(auth);
   const [isNotFound, setIsNotFound] = useState(false);
@@ -23,8 +23,8 @@ function Edit() {
 
       getDoc(docRef)
         .then((result) => {
-          const { url, notes, category } = result.data();
-          setData({ url, category, notes });
+          const { url, title, category, notes } = result.data();
+          setData({ url, title, category, notes });
         })
         .catch(() => setIsNotFound(true));
     }
@@ -73,6 +73,17 @@ function Edit() {
             name="url"
             required
             value={data.url}
+            onChange={handleChange}
+          />
+        </label>
+
+        <label>
+          <span className="text-gray-700">Title</span>
+          <input
+            type="text"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            name="title"
+            value={data.title}
             onChange={handleChange}
           />
         </label>

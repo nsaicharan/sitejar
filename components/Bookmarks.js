@@ -56,16 +56,22 @@ function Bookmarks({ user }) {
           {filteredBookmarks.map((bookmark) => (
             <li
               key={bookmark.id}
-              className="flex flex-col items-start py-3 px-4 shadow space-y-2"
+              className="flex items-center py-3 px-4 border rounded"
               data-id={bookmark.id}
             >
-              <Link href={bookmark.url} className="text-blue-500 underline">
-                {bookmark.url}
-              </Link>
+              <div className="flex-1">
+                <Link href={bookmark.url} className="text-blue-500 underline">
+                  {bookmark.title || bookmark.url}
+                </Link>
 
-              {bookmark.notes && <p>{bookmark.notes}</p>}
+                {bookmark.notes && <p className="mt-1.5">{bookmark.notes}</p>}
 
-              <div className="text-sm">[{bookmark.category}]</div>
+                <div className="mt-2.5">
+                  <span className="inline-block px-2 py-1 rounded text-sm text-slate-600 bg-slate-200">
+                    {bookmark.category}
+                  </span>
+                </div>
+              </div>
 
               <div className="flex gap-3">
                 <button
