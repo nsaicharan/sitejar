@@ -29,7 +29,7 @@ function Header() {
           {user && router.pathname !== '/add' && (
             <Link
               href="/add"
-              className="inline-block py-2 px-3 rounded text-sm text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200 md:px-4 md:text-base"
+              className="py-2 px-3 rounded text-sm text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200 md:px-4 md:text-base"
             >
               Add <span className="sr-only md:not-sr-only">a bookmark</span>
             </Link>
