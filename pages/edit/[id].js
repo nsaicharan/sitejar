@@ -7,6 +7,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import Spinner from '../../components/Spinner';
 import { signInWithGoogle } from './../../utils/firebase';
 import Error from 'next/error';
+import Link from 'next/link';
 
 function Edit() {
   const router = useRouter();
@@ -126,9 +127,18 @@ function Edit() {
           />
         </label>
 
-        <button className="mt-[6px] py-[9px] px-4 rounded bg-indigo-600 text-white text-center shadow-sm outline-none focus:ring focus:ring-indigo-200">
-          {isSaving ? <Spinner /> : 'Save'}
-        </button>
+        <div className="mt-1.5 flex gap-5">
+          <button className="py-[9px] px-4 rounded bg-indigo-600 text-white text-center shadow-sm outline-none focus:ring focus:ring-indigo-200">
+            {isSaving ? <Spinner /> : 'Save it'}
+          </button>
+
+          <Link
+            href="/"
+            className="py-2 px-4 rounded text-center text-indigo-600 border border-indigo-600 outline-none focus:ring focus:ring-indigo-200"
+          >
+            Cancel
+          </Link>
+        </div>
       </form>
     </div>
   );

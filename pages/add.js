@@ -4,6 +4,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import Spinner from './../components/Spinner';
+import Link from 'next/link';
 
 function Add() {
   const [existingCategories, setExistingCategories] = useState(['abc', '123']);
@@ -46,7 +47,11 @@ function Add() {
       {loading && <p>Please wait...</p>}
 
       {user && (
-        <form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit}>
+        <form
+          className="grid grid-cols-1 gap-6"
+          onSubmit={handleSubmit}
+          autoFocus
+        >
           <label>
             <span className="text-gray-700">
               URL <span className="text-xs">(required)</span>
@@ -97,9 +102,18 @@ function Add() {
             />
           </label>
 
-          <button className="mt-[6px] py-[9px] px-4 rounded bg-indigo-600 text-white shadow-sm outline-none focus:ring focus:ring-indigo-200">
-            {isSaving ? <Spinner /> : 'Save'}
-          </button>
+          <div className="mt-1.5 flex gap-5">
+            <button className="py-[9px] px-4 rounded bg-indigo-600 text-white text-center shadow-sm outline-none focus:ring focus:ring-indigo-200">
+              {isSaving ? <Spinner /> : 'Save it'}
+            </button>
+
+            <Link
+              href="/"
+              className="py-2 px-4 rounded text-center text-indigo-600 border border-indigo-600 outline-none focus:ring focus:ring-indigo-200"
+            >
+              Cancel
+            </Link>
+          </div>
         </form>
       )}
     </div>
