@@ -1,31 +1,11 @@
 import Link from 'next/link';
-import {
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  orderBy,
-  query,
-} from 'firebase/firestore';
-import { db } from './../utils/firebase';
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useBookmarks } from '../contexts/BookmarksContext';
 
-function Bookmarks({ user }) {
-  const [bookmarks, setBookmarks] = useState([]);
-  const [isFetching, setIsFetching] = useState(true);
+function Bookmarks() {
+  const { bookmarks, deleteBookmark, fetching } = useBookmarks();
   const [searchTerm, setSearchTerm] = useState('');
   const searchRef = useRef();
-
-  async function getBookmarks() {
-    const collectionRef = collection(db, `users/${user.email}/bookmarks`);
-    const q = query(collectionRef, orderBy('createdAt', 'desc'));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      setBookmarks(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      setIsFetching(false);
-    });
-    return unsubscribe;
-  }
-  useEffect(() => getBookmarks, []);
 
   const handleKeyPress = useCallback((e) => {
     if (e.key === '/') searchRef.current.focus();
@@ -34,14 +14,6 @@ function Bookmarks({ user }) {
     window.addEventListener('keyup', handleKeyPress);
     return () => window.removeEventListener('keyup', handleKeyPress);
   }, [handleKeyPress]);
-
-  function handleDelete(e) {
-    if (window.confirm('Are you sure you want to delete?')) {
-      const id = e.target.closest('li').dataset.id;
-      const docRef = doc(db, `users/${user.email}/bookmarks/${id}`);
-      deleteDoc(docRef);
-    }
-  }
 
   function handleChange(e) {
     setSearchTerm(e.target.value.trim().replace(/\s+/g, ' ').toLowerCase());
@@ -54,7 +26,7 @@ function Bookmarks({ user }) {
   );
 
   function renderBookmarks() {
-    if (isFetching) return;
+    if (fetching) return;
 
     if (bookmarks.length > 0) {
       return (
@@ -91,11 +63,7 @@ function Bookmarks({ user }) {
 
               <div className="mt-3 md:mt-0 flex gap-3">
                 <Link
-                  href={{
-                    pathname: `/edit/${bookmark.id}`,
-                    query: bookmark,
-                  }}
-                  as={`/edit/${bookmark.id}`}
+                  href={`/edit/${bookmark.id}`}
                   className="inline-block p-2 rounded text-indigo-600 bg-indigo-200"
                   title="Edit"
                 >
@@ -118,7 +86,7 @@ function Bookmarks({ user }) {
 
                 <button
                   className="p-2 rounded text-red-600 bg-red-200"
-                  onClick={handleDelete}
+                  onClick={() => deleteBookmark(bookmark.id)}
                   title="Delete"
                 >
                   <svg
@@ -173,7 +141,7 @@ function Bookmarks({ user }) {
           ref={searchRef}
         />
 
-        <span className="absolute inset-y-0 pl-3.5 flex items-center">
+        <span className="absolute inset-y-0 pl-3.5 flex items-center pointer-events-none">
           <svg
             viewBox="0 0 20 20"
             aria-hidden="true"

@@ -1,34 +1,26 @@
-import { useState } from 'react';
-import { signInWithGoogle, auth, db } from './../utils/firebase';
+import { signInWithGoogle, auth } from './../utils/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import Spinner from './../components/Spinner';
 import Link from 'next/link';
+import { useBookmarks } from '../contexts/BookmarksContext';
+import { useState } from 'react';
 
 function Add() {
-  const [existingCategories, setExistingCategories] = useState(['abc', '123']);
   const [user, loading] = useAuthState(auth);
-  const [isSaving, setIsSaving] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const { existingCategories, addBookmark } = useBookmarks();
   const router = useRouter();
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (isSaving) return;
-    setIsSaving(true);
+    if (saving) return;
+    setSaving(true);
 
     const { url, title, category, notes } = Object.fromEntries(
       new FormData(e.target)
     );
-
-    const collectionRef = collection(db, `users/${user.email}/bookmarks`);
-    await addDoc(collectionRef, {
-      url: url.trim(),
-      title: title.trim(),
-      category: category.trim(),
-      notes: notes.trim(),
-      createdAt: serverTimestamp(),
-    });
+    await addBookmark({ url, title, category, notes });
 
     router.push('/');
   }
@@ -81,6 +73,7 @@ function Add() {
                 type="text"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 name="category"
+                autoComplete="off"
                 list="categoriesList"
               />
               <span className="absolute top-0.5 bottom-0.5 right-0.5 w-10 bg-white"></span>
@@ -104,7 +97,7 @@ function Add() {
 
           <div className="mt-1.5 flex gap-5">
             <button className="py-[9px] px-4 rounded bg-indigo-600 text-white text-center shadow-sm outline-none focus:ring focus:ring-indigo-200">
-              {isSaving ? <Spinner /> : 'Save it'}
+              {saving ? <Spinner /> : 'Save it'}
             </button>
 
             <Link

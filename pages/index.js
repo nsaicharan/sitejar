@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <>
       {!user && !loading && <FrontIntro />}
-      {user && <Bookmarks user={user} />}
+      {user && <Bookmarks />}
     </>
   );
 }

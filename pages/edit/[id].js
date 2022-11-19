@@ -1,50 +1,48 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { auth } from '../../utils/firebase';
-import { db } from '../../utils/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Spinner from '../../components/Spinner';
 import { signInWithGoogle } from './../../utils/firebase';
 import Error from 'next/error';
 import Link from 'next/link';
+import { useBookmarks } from '../../contexts/BookmarksContext';
 
 function Edit() {
   const router = useRouter();
-  const { url, title, category, notes, id } = router.query;
-  const [data, setData] = useState({ url, title, category, notes });
-  const [isSaving, setIsSaving] = useState(false);
+  const { id } = router.query;
+  const [data, setData] = useState({
+    url: '',
+    title: '',
+    category: '',
+    notes: '',
+  });
   const [user, loading] = useAuthState(auth);
-  const [isNotFound, setIsNotFound] = useState(false);
-  const [existingCategories, setExistingCategories] = useState(['abc', '123']);
+  const [notFound, setNotFound] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const { bookmarks, existingCategories, updateBookmark, fetching } =
+    useBookmarks();
 
   useEffect(() => {
-    if (!url && user) {
-      const docRef = doc(db, `users/${user.email}/bookmarks/${id}`);
+    if (fetching) return;
 
-      getDoc(docRef)
-        .then((result) => {
-          const { url, title, category, notes } = result.data();
-          setData({ url, title, category, notes });
-        })
-        .catch(() => setIsNotFound(true));
+    const bookmarkData = bookmarks.filter((b) => b.id === id);
+
+    if (bookmarkData.length) {
+      const { url, title, category, notes } = bookmarkData[0];
+      setData({ url, title, category, notes });
+    } else {
+      setNotFound(true);
     }
-  }, [user]);
+  }, [fetching]);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (isSaving) return;
-    setIsSaving(true);
+    if (saving) return;
+    setSaving(true);
 
-    const docRef = doc(db, `users/${user.email}/bookmarks/${id}`);
-
-    const trimmedData = Object.keys(data).reduce((acc, curr) => {
-      acc[curr] = data[curr] ? data[curr].trim() : '';
-      return acc;
-    }, {});
-
-    await setDoc(docRef, trimmedData, { merge: true });
-
+    await updateBookmark({ id, ...data });
     router.push('/');
   }
 
@@ -58,7 +56,7 @@ function Edit() {
     return;
   }
 
-  if (isNotFound) {
+  if (notFound) {
     return <Error statusCode={404} />;
   }
 
@@ -102,6 +100,7 @@ function Edit() {
               type="text"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               name="category"
+              autoComplete="off"
               list="categoriesList"
               value={data.category}
               onChange={handleChange}
@@ -129,7 +128,7 @@ function Edit() {
 
         <div className="mt-1.5 flex gap-5">
           <button className="py-[9px] px-4 rounded bg-indigo-600 text-white text-center shadow-sm outline-none focus:ring focus:ring-indigo-200">
-            {isSaving ? <Spinner /> : 'Save it'}
+            {saving ? <Spinner /> : 'Save it'}
           </button>
 
           <Link

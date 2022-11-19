@@ -1,11 +1,14 @@
 import '../styles/globals.css';
 import Layout from './../components/Layout';
+import { BookmarksProvider } from './../contexts/BookmarksContext';
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <BookmarksProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </BookmarksProvider>
   );
 }
 
