@@ -31,7 +31,7 @@ function Add() {
   }
 
   return (
-    <div className="w-full max-w-xl mx-auto">
+    <div className="w-full max-w-2xl mx-auto">
       <h1 className="mb-8 text-2xl text-slate-900 font-bold">
         Add new bookmark
       </h1>
@@ -80,8 +80,8 @@ function Add() {
             </div>
           </label>
           <datalist id="categoriesList">
-            {existingCategories.map((category, i) => (
-              <option key={i} value={category} />
+            {Object.keys(existingCategories).map((category) => (
+              <option key={category} value={category} />
             ))}
           </datalist>
 

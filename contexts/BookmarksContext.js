@@ -19,7 +19,7 @@ export const useBookmarks = () => useContext(BookmarksContext);
 export function BookmarksProvider({ children }) {
   const [user, loading] = useAuthState(auth);
   const [bookmarks, setBookmarks] = useState([]);
-  const [existingCategories, setExistingCategories] = useState([]);
+  const [existingCategories, setExistingCategories] = useState({});
   const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
@@ -34,23 +34,36 @@ export function BookmarksProvider({ children }) {
         id: doc.id,
       }));
 
-      const categories = bookmarksData.reduce((acc, curr) => {
-        if (!acc.includes(curr.category)) acc.push(curr.category);
-        return acc;
-      }, []);
+      const categories = bookmarksData.reduce((accumulator, bookmark) => {
+        if (!accumulator[bookmark.category]) {
+          accumulator[bookmark.category] = 1;
+        } else {
+          accumulator[bookmark.category]++;
+        }
+
+        return accumulator;
+      }, {});
+
+      const sortedCategories = Object.keys(categories)
+        .sort()
+        .reduce((accumulator, key) => {
+          accumulator[key] = categories[key];
+
+          return accumulator;
+        }, {});
 
       setBookmarks(bookmarksData);
-      setExistingCategories(categories);
+      setExistingCategories(sortedCategories);
       setFetching(false);
     });
 
     return unsubscribe;
   }, [user]);
 
-  function deleteBookmark(id) {
+  async function deleteBookmark(id) {
     if (window.confirm('Are you sure you want to delete?')) {
       const docRef = doc(db, `users/${user.email}/bookmarks/${id}`);
-      deleteDoc(docRef);
+      await deleteDoc(docRef);
     }
   }
 
@@ -59,7 +72,7 @@ export function BookmarksProvider({ children }) {
     await addDoc(collectionRef, {
       url: url.trim(),
       title: title.trim(),
-      category: category.trim(),
+      category: category.trim().toLowerCase() || 'uncategorized',
       notes: notes.trim(),
       createdAt: serverTimestamp(),
     });
@@ -72,7 +85,7 @@ export function BookmarksProvider({ children }) {
       {
         url: url.trim(),
         title: title.trim(),
-        category: category.trim(),
+        category: category.trim().toLowerCase() || 'uncategorized',
         notes: notes.trim(),
       },
       { merge: true }
