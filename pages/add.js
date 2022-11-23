@@ -45,15 +45,12 @@ function Add() {
           autoFocus
         >
           <label>
-            <span className="text-gray-700">
-              URL <span className="text-xs">(required)</span>
-            </span>
+            <span className="text-gray-700">URL</span>
             <input
               type="url"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               placeholder="https://example.com"
               name="url"
-              required
             />
           </label>
 
