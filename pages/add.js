@@ -11,6 +11,7 @@ function Add() {
   const [saving, setSaving] = useState(false);
   const { existingCategories, addBookmark } = useBookmarks();
   const router = useRouter();
+  const { url, title } = router.query;
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -51,6 +52,7 @@ function Add() {
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               placeholder="https://example.com"
               name="url"
+              defaultValue={url}
             />
           </label>
 
@@ -60,6 +62,7 @@ function Add() {
               type="text"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               name="title"
+              defaultValue={title}
             />
           </label>
 

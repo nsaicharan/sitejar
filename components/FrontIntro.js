@@ -34,7 +34,7 @@ function FrontIntro() {
           or drag this{' '}
           <a
             className="my-1 inline-block py-[7px] px-3 rounded border border-dashed border-current bg-indigo-50 text-indigo-600"
-            href="javascript:void(window.location.href='http://localhost:3000/add/?url='+document.URL+'&title='+document.title)"
+            href="javascript:void(window.location.href='https://webmark.vercel.app/add?url='+document.URL+'&title='+document.title)"
           >
             Webmark
           </a>{' '}
