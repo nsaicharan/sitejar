@@ -146,7 +146,7 @@ function Bookmarks() {
   }
 
   return (
-    <section className="w-full max-w-4xl mx-auto self-stretch">
+    <section className="w-full max-w-4xl mx-auto">
       <h1 className="text-2xl text-slate-900 font-bold">Your bookmarks</h1>
 
       <div className="mt-6 flex gap-6">
