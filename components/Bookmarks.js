@@ -132,7 +132,7 @@ function Bookmarks() {
     } else {
       return (
         <>
-          <p className="my-4">You haven't saved any bookmarks yet.</p>
+          <p className="my-4">You haven&apos;t saved any bookmarks yet.</p>
 
           <Link
             href="/add"
