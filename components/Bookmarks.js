@@ -33,6 +33,7 @@ function Bookmarks() {
   const filteredBookmarks = bookmarks.filter((b) => {
     const hasTerm =
       b.url.toLowerCase().includes(searchTerm) ||
+      b.title.toLowerCase().includes(searchTerm) ||
       b.notes.toLowerCase().includes(searchTerm);
 
     if (selectedCategory === 'all') {
