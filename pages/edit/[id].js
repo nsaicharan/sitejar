@@ -43,7 +43,7 @@ function Edit() {
     setSaving(true);
 
     await updateBookmark({ id, ...data });
-    router.push('/');
+    router.push('/view');
   }
 
   function handleChange(e) {
@@ -131,7 +131,7 @@ function Edit() {
           </button>
 
           <Link
-            href="/"
+            href="/view"
             className="py-2 px-4 rounded text-center text-indigo-600 border border-indigo-600 outline-none focus:ring focus:ring-indigo-200"
           >
             Cancel

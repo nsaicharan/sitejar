@@ -1,9 +1,5 @@
-import { initializeApp } from 'firebase/app';
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithRedirect,
-} from 'firebase/auth';
+import { getApp, getApps, initializeApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -15,10 +11,10 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_APP_ID,
 };
 
-const app = initializeApp(firebaseConfig);
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 export const db = getFirestore(app);
-
 export const auth = getAuth();
-const provider = new GoogleAuthProvider();
-export const signInWithGoogle = () => signInWithRedirect(auth, provider);
+
+export const signInWithGoogle = () =>
+  signInWithRedirect(auth, new GoogleAuthProvider());

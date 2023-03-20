@@ -1,3 +1,8 @@
+import {
+  AuthAction,
+  withAuthUser,
+  withAuthUserTokenSSR,
+} from 'next-firebase-auth';
 import Link from 'next/link';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useBookmarks } from '../contexts/BookmarksContext';
@@ -194,4 +199,10 @@ function Bookmarks() {
   );
 }
 
-export default Bookmarks;
+export const getServerSideProps = withAuthUserTokenSSR({
+  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
+})();
+
+export default withAuthUser({
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+})(Bookmarks);

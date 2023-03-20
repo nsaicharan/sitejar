@@ -23,7 +23,7 @@ function Add() {
     );
     await addBookmark({ url, title, category, notes });
 
-    router.push('/');
+    router.push('/view');
   }
 
   if (!loading && !user) {
@@ -101,7 +101,7 @@ function Add() {
             </button>
 
             <Link
-              href="/"
+              href="/view"
               className="py-2 px-4 rounded text-center text-indigo-600 border border-indigo-600 outline-none focus:ring focus:ring-indigo-200"
             >
               Cancel
