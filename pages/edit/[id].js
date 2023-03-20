@@ -126,7 +126,7 @@ function Edit() {
         </label>
 
         <div className="mt-1.5 flex gap-5">
-          <button className="py-[9px] px-4 rounded bg-indigo-600 text-white text-center shadow-sm outline-none focus:ring focus:ring-indigo-200">
+          <button className="flex py-[9px] px-4 rounded bg-indigo-600 text-white text-center shadow-sm outline-none focus:ring focus:ring-indigo-200">
             {saving ? <Spinner /> : 'Save it'}
           </button>
 

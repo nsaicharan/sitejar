@@ -36,7 +36,7 @@ function Header() {
           )}
 
           <button
-            className="py-2 px-3 rounded text-sm text-indigo-600 border border-indigo-600 outline-none focus:ring focus:ring-indigo-200 md:px-4 md:text-base"
+            className="flex py-2 px-3 rounded text-sm text-indigo-600 border border-indigo-600 outline-none focus:ring focus:ring-indigo-200 md:px-4 md:text-base"
             onClick={handleAuth}
             disabled={loading}
           >
