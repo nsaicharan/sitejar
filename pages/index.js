@@ -26,7 +26,7 @@ export function Home() {
           clutter your browser bookmarks?
         </h1>
         <p className="mt-7 text-xl">
-          Enter Webmark. Save all the interesting links you come across while
+          Enter Sitejar. Save all the interesting links you come across while
           browsing and find them later when you actually need it.
         </p>
         <p className="mt-9">
@@ -39,9 +39,9 @@ export function Home() {
           or drag this{' '}
           <a
             className="my-1 inline-block py-[7px] px-3 rounded border border-dashed border-current bg-indigo-50 text-indigo-600"
-            href="javascript:void(window.location.href='https://webmark-wip.vercel.app/add?url='+document.URL+'&title='+document.title)"
+            href="javascript:void(window.location.href='https://sitejar.vercel.app/add?url='+document.URL+'&title='+document.title)"
           >
-            Webmark
+            Sitejar
           </a>{' '}
           bookmarklet to your bookmarks bar and click it whenever you want to
           save something.

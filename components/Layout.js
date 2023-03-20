@@ -5,7 +5,7 @@ function Layout({ children }) {
   return (
     <div className="min-h-screen flex flex-col text-slate-700">
       <Head>
-        <title>Webmark</title>
+        <title>Sitejar</title>
       </Head>
 
       <Header />

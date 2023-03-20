@@ -22,7 +22,7 @@ function Header() {
     <header className="py-3 shadow-sm border-b border-slate-900/10">
       <nav className="max-w-7xl mx-auto px-5 flex justify-between items-center">
         <Link href="/" className="text-2xl text-slate-900">
-          Webmark
+          Sitejar
         </Link>
 
         <div className="flex gap-4 md:gap-5">
