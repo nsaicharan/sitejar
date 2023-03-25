@@ -1,11 +1,9 @@
-import {
-  AuthAction,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from 'next-firebase-auth';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './api/auth/[...nextauth]';
 import Link from 'next/link';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useBookmarks } from '../contexts/BookmarksContext';
+import Spinner from './../components/Spinner';
 
 function Bookmarks() {
   const { bookmarks, existingCategories, deleteBookmark, fetching } =
@@ -49,7 +47,13 @@ function Bookmarks() {
   });
 
   function renderBookmarks() {
-    if (fetching) return;
+    if (fetching) {
+      return (
+        <div className="mt-8 pl-2 text-indigo-600">
+          <Spinner />
+        </div>
+      );
+    }
 
     if (bookmarks.length > 0) {
       return (
@@ -138,7 +142,7 @@ function Bookmarks() {
     } else {
       return (
         <>
-          <p className="my-4">You haven&apos;t saved any bookmarks yet.</p>
+          <p className="mt-7 mb-4">You haven&apos;t saved any bookmarks yet.</p>
 
           <Link
             href="/add"
@@ -199,10 +203,21 @@ function Bookmarks() {
   );
 }
 
-export const getServerSideProps = withAuthUserTokenSSR({
-  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-})();
+export const getServerSideProps = async (ctx) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
 
-export default withAuthUser({
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(Bookmarks);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
+
+export default Bookmarks;

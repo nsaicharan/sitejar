@@ -1,12 +1,9 @@
+import { getServerSession } from 'next-auth';
+import { authOptions } from './api/auth/[...nextauth]';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  AuthAction,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from 'next-firebase-auth';
 
-export function Home() {
+function Home() {
   return (
     <section className="m-auto max-w-3xl lg:max-w-full lg:flex lg:items-center lg:gap-7 xl:gap-10">
       <div className="mb-11 lg:mb-0 lg:w-2/5 lg:order-1">
@@ -51,10 +48,23 @@ export function Home() {
   );
 }
 
-export const getServerSideProps = withAuthUserTokenSSR({
-  whenAuthed: AuthAction.REDIRECT_TO_APP,
-})();
+export const getServerSideProps = async (ctx) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
 
-export default withAuthUser({
-  whenAuthed: AuthAction.REDIRECT_TO_APP,
-})(Home);
+  console.log(session);
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/view',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
+
+export default Home;

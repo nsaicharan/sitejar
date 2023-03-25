@@ -1,13 +1,14 @@
-import { signInWithGoogle, auth } from './../utils/firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/router';
 import Spinner from './../components/Spinner';
 import Link from 'next/link';
 import { useBookmarks } from '../contexts/BookmarksContext';
 import { useState } from 'react';
+import { signIn, useSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './api/auth/[...nextauth]';
 
-function Add() {
-  const [user, loading] = useAuthState(auth);
+function Add({ user }) {
+  const { status } = useSession();
   const [saving, setSaving] = useState(false);
   const { existingCategories, addBookmark } = useBookmarks();
   const router = useRouter();
@@ -26,9 +27,8 @@ function Add() {
     router.push('/view');
   }
 
-  if (!loading && !user) {
-    signInWithGoogle();
-    return;
+  if (!user) {
+    signIn('google');
   }
 
   return (
@@ -37,9 +37,7 @@ function Add() {
         Add new bookmark
       </h1>
 
-      {loading && <p>Please wait...</p>}
-
-      {user && (
+      {status !== 'loading' && user ? (
         <form
           className="grid grid-cols-1 gap-6"
           onSubmit={handleSubmit}
@@ -108,9 +106,22 @@ function Add() {
             </Link>
           </div>
         </form>
+      ) : (
+        <div className="mt-8 pl-2 text-indigo-600">
+          <Spinner />
+        </div>
       )}
     </div>
   );
 }
+
+export const getServerSideProps = async (ctx) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  const user = session ? session.user.id : null;
+
+  return {
+    props: { user },
+  };
+};
 
 export default Add;

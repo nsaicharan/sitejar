@@ -10,65 +10,73 @@ import {
   serverTimestamp,
   setDoc,
 } from 'firebase/firestore';
-import { auth, db } from './../utils/firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useSession } from 'next-auth/react';
+import { signInWithCustomToken } from 'firebase/auth';
+import { auth, db } from '../utils/firebase';
 
 export const BookmarksContext = createContext();
 export const useBookmarks = () => useContext(BookmarksContext);
 
 export function BookmarksProvider({ children }) {
-  const [user, loading] = useAuthState(auth);
   const [bookmarks, setBookmarks] = useState([]);
   const [existingCategories, setExistingCategories] = useState({});
   const [fetching, setFetching] = useState(true);
+  const { data: session } = useSession();
+  const user = session?.user;
 
   useEffect(() => {
-    if (!user) return;
+    async function fetchBookmarks() {
+      if (!user) return;
 
-    const collectionRef = collection(db, `users/${user.email}/bookmarks`);
-    const q = query(collectionRef, orderBy('createdAt', 'desc'));
+      await signInWithCustomToken(auth, user.customToken);
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const bookmarksData = snapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
+      const collectionRef = collection(db, `users/${user.id}/bookmarks`);
+      const q = query(collectionRef, orderBy('createdAt', 'desc'));
 
-      const categories = bookmarksData.reduce((accumulator, bookmark) => {
-        if (!accumulator[bookmark.category]) {
-          accumulator[bookmark.category] = 1;
-        } else {
-          accumulator[bookmark.category]++;
-        }
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const bookmarksData = snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
 
-        return accumulator;
-      }, {});
-
-      const sortedCategories = Object.keys(categories)
-        .sort()
-        .reduce((accumulator, key) => {
-          accumulator[key] = categories[key];
+        const categories = bookmarksData.reduce((accumulator, bookmark) => {
+          if (!accumulator[bookmark.category]) {
+            accumulator[bookmark.category] = 1;
+          } else {
+            accumulator[bookmark.category]++;
+          }
 
           return accumulator;
         }, {});
 
-      setBookmarks(bookmarksData);
-      setExistingCategories(sortedCategories);
-      setFetching(false);
-    });
+        const sortedCategories = Object.keys(categories)
+          .sort()
+          .reduce((accumulator, key) => {
+            accumulator[key] = categories[key];
 
-    return unsubscribe;
+            return accumulator;
+          }, {});
+
+        setBookmarks(bookmarksData);
+        setExistingCategories(sortedCategories);
+        setFetching(false);
+      });
+
+      return unsubscribe;
+    }
+
+    fetchBookmarks();
   }, [user]);
 
   async function deleteBookmark(id) {
     if (window.confirm('Are you sure you want to delete?')) {
-      const docRef = doc(db, `users/${user.email}/bookmarks/${id}`);
+      const docRef = doc(db, `users/${user.id}/bookmarks/${id}`);
       await deleteDoc(docRef);
     }
   }
 
   async function addBookmark({ url, title, category, notes }) {
-    const collectionRef = collection(db, `users/${user.email}/bookmarks`);
+    const collectionRef = collection(db, `users/${user.id}/bookmarks`);
     await addDoc(collectionRef, {
       url: url.trim(),
       title: title.trim(),
@@ -79,7 +87,7 @@ export function BookmarksProvider({ children }) {
   }
 
   async function updateBookmark({ id, url, title, category, notes }) {
-    const docRef = doc(db, `users/${user.email}/bookmarks/${id}`);
+    const docRef = doc(db, `users/${user.id}/bookmarks/${id}`);
     await setDoc(
       docRef,
       {

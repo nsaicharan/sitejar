@@ -1,17 +1,17 @@
 import '../styles/globals.css';
-import Layout from './../components/Layout';
-import { BookmarksProvider } from './../contexts/BookmarksContext';
-import initAuth from '../initAuth';
+import { SessionProvider } from 'next-auth/react';
+import Layout from '../components/Layout';
+import { BookmarksProvider } from '../contexts/BookmarksContext';
 
-initAuth();
-
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
-    <BookmarksProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </BookmarksProvider>
+    <SessionProvider session={session}>
+      <BookmarksProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </BookmarksProvider>
+    </SessionProvider>
   );
 }
 

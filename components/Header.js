@@ -1,20 +1,19 @@
+import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../utils/firebase';
-import { signInWithGoogle } from './../utils/firebase';
 import { useRouter } from 'next/router';
 import Spinner from './Spinner';
 
 function Header() {
-  const [user, loading] = useAuthState(auth);
+  const { data: session, status } = useSession();
+  const user = session?.user;
   const router = useRouter();
 
   async function handleAuth() {
     if (user) {
-      await router.push('/');
-      auth.signOut();
+      signOut({ redirect: false });
+      router.push('/');
     } else {
-      signInWithGoogle();
+      signIn('google');
     }
   }
 
@@ -38,9 +37,8 @@ function Header() {
           <button
             className="flex py-2 px-3 rounded text-sm text-indigo-600 border border-indigo-600 outline-none focus:ring focus:ring-indigo-200 md:px-4 md:text-base"
             onClick={handleAuth}
-            disabled={loading}
           >
-            {loading ? <Spinner /> : user ? 'Sign Out' : 'Sign In'}
+            {status === 'loading' ? <Spinner /> : user ? 'Sign Out' : 'Sign In'}
           </button>
         </div>
       </nav>
