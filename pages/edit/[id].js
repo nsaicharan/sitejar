@@ -25,6 +25,7 @@ function Edit({ user }) {
     useBookmarks();
 
   useEffect(() => {
+    if (!user) signIn('google');
     if (fetching) return;
 
     const bookmarkData = bookmarks.filter((b) => b.id === id);
@@ -49,10 +50,6 @@ function Edit({ user }) {
   function handleChange(e) {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
-  }
-
-  if (!user) {
-    signIn('google');
   }
 
   if (notFound) {

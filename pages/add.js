@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import Spinner from './../components/Spinner';
 import Link from 'next/link';
 import { useBookmarks } from '../contexts/BookmarksContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
@@ -13,6 +13,10 @@ function Add({ user }) {
   const { existingCategories, addBookmark } = useBookmarks();
   const router = useRouter();
   const { url, title } = router.query;
+
+  useEffect(() => {
+    if (!user) signIn('google');
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -25,10 +29,6 @@ function Add({ user }) {
     await addBookmark({ url, title, category, notes });
 
     router.push('/view');
-  }
-
-  if (!user) {
-    signIn('google');
   }
 
   return (
