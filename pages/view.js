@@ -4,10 +4,13 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useBookmarks } from '../contexts/BookmarksContext';
 import Layout from '../components/Layout';
 import BookmarksList from '../components/BookmarksList';
+import Pagination from '../components/Pagination';
 
 function Bookmarks({ user }) {
   const { bookmarks, existingCategories } = useBookmarks();
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [bookmarksPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
   const searchRef = useRef();
 
@@ -30,7 +33,21 @@ function Bookmarks({ user }) {
 
   function handleSearch(e) {
     setSearchTerm(e.target.value.trim().replace(/\s+/g, ' ').toLowerCase());
+    setCurrentPage(1);
   }
+
+  const filteredBookmarks = bookmarks.filter((b) => {
+    const hasTerm =
+      b.url.toLowerCase().includes(searchTerm) ||
+      b.title.toLowerCase().includes(searchTerm) ||
+      b.notes.toLowerCase().includes(searchTerm);
+
+    if (selectedCategory === 'all') {
+      return hasTerm;
+    }
+
+    return b.category === selectedCategory && hasTerm;
+  });
 
   return (
     <Layout user={user}>
@@ -77,9 +94,19 @@ function Bookmarks({ user }) {
         </div>
 
         <BookmarksList
-          searchTerm={searchTerm}
-          selectedCategory={selectedCategory}
+          filteredBookmarks={filteredBookmarks}
+          bookmarksPerPage={bookmarksPerPage}
+          currentPage={currentPage}
         />
+
+        {filteredBookmarks.length > bookmarksPerPage && (
+          <Pagination
+            totalBookmarks={filteredBookmarks.length}
+            bookmarksPerPage={bookmarksPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
       </section>
     </Layout>
   );

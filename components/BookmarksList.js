@@ -2,37 +2,45 @@ import Link from 'next/link';
 import { useBookmarks } from '../contexts/BookmarksContext';
 import Spinner from './Spinner';
 
-function BookmarksList({ searchTerm, selectedCategory }) {
+function BookmarksList({ filteredBookmarks, bookmarksPerPage, currentPage }) {
   const { bookmarks, deleteBookmark, fetching } = useBookmarks();
-
-  const filteredBookmarks = bookmarks.filter((b) => {
-    const hasTerm =
-      b.url.toLowerCase().includes(searchTerm) ||
-      b.title.toLowerCase().includes(searchTerm) ||
-      b.notes.toLowerCase().includes(searchTerm);
-
-    if (selectedCategory === 'all') {
-      return hasTerm;
-    }
-
-    return b.category === selectedCategory && hasTerm;
-  });
+  const indexOfLastBookmark = currentPage * bookmarksPerPage;
+  const indexOfFirstBookmark = indexOfLastBookmark - bookmarksPerPage;
+  const currentBookmarks = filteredBookmarks.slice(
+    indexOfFirstBookmark,
+    indexOfLastBookmark
+  );
 
   if (fetching) {
     return (
-      <div className="mt-8 pl-2 text-indigo-600">
+      <div className="mt-10 pl-2 text-indigo-600">
         <Spinner />
       </div>
     );
   }
 
-  if (bookmarks.length > 0) {
+  if (bookmarks.length === 0) {
     return (
-      <ul className="mt-7 space-y-3" role="list">
-        {filteredBookmarks.map((bookmark) => (
+      <>
+        <p className="mt-10 mb-4">You haven&apos;t saved any bookmarks yet.</p>
+
+        <Link
+          href="/add"
+          className="inline-block py-2 px-4 rounded text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200"
+        >
+          Add your first bookmark
+        </Link>
+      </>
+    );
+  }
+
+  if (filteredBookmarks.length > 0) {
+    return (
+      <ul className="mt-10 space-y-3" role="list">
+        {currentBookmarks.map((bookmark) => (
           <li
             key={bookmark.id}
-            className="py-3 px-4 border rounded md:flex md:items-center "
+            className="py-3 px-4 border rounded md:flex md:items-center"
             data-id={bookmark.id}
           >
             <div className="flex-1 pr-4">
@@ -111,18 +119,7 @@ function BookmarksList({ searchTerm, selectedCategory }) {
       </ul>
     );
   } else {
-    return (
-      <>
-        <p className="mt-7 mb-4">You haven&apos;t saved any bookmarks yet.</p>
-
-        <Link
-          href="/add"
-          className="inline-block py-2 px-4 rounded text-white bg-indigo-600 outline-none focus:ring focus:ring-indigo-200"
-        >
-          Add your first bookmark
-        </Link>
-      </>
-    );
+    return <p className="mt-10 ml-1 text-red-500">No search results found</p>;
   }
 }
 
