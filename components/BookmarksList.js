@@ -61,7 +61,7 @@ function BookmarksList({ filteredBookmarks, bookmarksPerPage, currentPage }) {
               )}
 
               <div className="mt-2.5">
-                <span className="inline-block px-2 py-1 rounded text-xs bg-slate-200">
+                <span className="inline-block px-2 py-1 rounded text-xs bg-slate-200 lowercase">
                   {bookmark.category}
                 </span>
               </div>
