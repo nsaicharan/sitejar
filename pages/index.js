@@ -24,8 +24,8 @@ function Home() {
 
         <div className="lg:flex-1">
           <h1 className="text-2xl md:text-3xl xl:text-4xl font-bold text-slate-900">
-            Found a useful site that you might need later, but don&apos;t want
-            to clutter your browser bookmarks?
+            Found a useful site that you might need later, but don't want to
+            clutter your browser bookmarks?
           </h1>
           <p className="mt-7 text-xl">
             Enter Sitejar. Save all the interesting links you come across while
