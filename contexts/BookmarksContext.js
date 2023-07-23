@@ -77,10 +77,15 @@ export function BookmarksProvider({ children }) {
 
   async function addBookmark({ url, title, category, notes }) {
     const collectionRef = collection(db, `users/${user.id}/bookmarks`);
+    const trimmedCategory =
+      category.trim().toLowerCase() === 'all' || !category.trim()
+        ? 'Uncategorized'
+        : category.trim();
+
     await addDoc(collectionRef, {
       url: url.trim(),
       title: title.trim(),
-      category: category.trim().toLowerCase() || 'uncategorized',
+      category: trimmedCategory,
       notes: notes.trim(),
       createdAt: serverTimestamp(),
     });
@@ -88,12 +93,17 @@ export function BookmarksProvider({ children }) {
 
   async function updateBookmark({ id, url, title, category, notes }) {
     const docRef = doc(db, `users/${user.id}/bookmarks/${id}`);
+    const trimmedCategory =
+      category.trim().toLowerCase() === 'all' || !category.trim()
+        ? 'Uncategorized'
+        : category.trim();
+
     await setDoc(
       docRef,
       {
         url: url.trim(),
         title: title.trim(),
-        category: category.trim().toLowerCase() || 'uncategorized',
+        category: trimmedCategory,
         notes: notes.trim(),
       },
       { merge: true }
