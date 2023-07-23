@@ -38,13 +38,13 @@ function Home() {
             >
               Start saving now
             </Link>{' '}
-            or drag this
+            or drag this{' '}
             <a
               className="my-1 inline-block py-[7px] px-3 rounded border border-dashed border-current bg-indigo-50 text-indigo-600"
               href={bookmarklet}
             >
               Sitejar
-            </a>
+            </a>{' '}
             bookmarklet to your bookmarks bar and click it whenever you want to
             save something.
           </p>
