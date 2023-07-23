@@ -77,10 +77,9 @@ export function BookmarksProvider({ children }) {
 
   async function addBookmark({ url, title, category, notes }) {
     const collectionRef = collection(db, `users/${user.id}/bookmarks`);
-    const trimmedCategory =
-      category.trim().toLowerCase() === 'all' || !category.trim()
-        ? 'Uncategorized'
-        : category.trim();
+    let trimmedCategory = category.trim().toLowerCase();
+    if (!trimmedCategory || trimmedCategory === 'all')
+      trimmedCategory = 'uncategorized';
 
     await addDoc(collectionRef, {
       url: url.trim(),
@@ -93,10 +92,9 @@ export function BookmarksProvider({ children }) {
 
   async function updateBookmark({ id, url, title, category, notes }) {
     const docRef = doc(db, `users/${user.id}/bookmarks/${id}`);
-    const trimmedCategory =
-      category.trim().toLowerCase() === 'all' || !category.trim()
-        ? 'Uncategorized'
-        : category.trim();
+    let trimmedCategory = category.trim().toLowerCase();
+    if (!trimmedCategory || trimmedCategory === 'all')
+      trimmedCategory = 'uncategorized';
 
     await setDoc(
       docRef,

@@ -16,13 +16,11 @@ export default function CategoriesListbox({
         <div className="w-[180px]">
           <div className="relative">
             <div>
-              <Listbox.Label className="block text-xs mb-2">Category</Listbox.Label>
-              <Listbox.Button
-                className="relative w-full cursor-default text-sm md:text-base text-left shadow rounded-md bg-white py-2 pl-3 pr-10 border border-gray-300 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              >
-                <span className="block truncate capitalize">
-                  {selectedCategory}
-                </span>
+              <Listbox.Label className="block text-xs mb-2">
+                Category
+              </Listbox.Label>
+              <Listbox.Button className="relative w-full cursor-default text-sm md:text-base text-left shadow rounded-md bg-white py-2 pl-3 pr-10 border border-gray-300 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                <span className="block truncate">{selectedCategory}</span>
                 <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2 text-gray-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -65,7 +63,7 @@ export default function CategoriesListbox({
                       <span
                         className={classNames(
                           selected ? 'font-medium' : 'font-normal',
-                          'block truncate capitalize'
+                          'block truncate'
                         )}
                       >
                         all
@@ -115,7 +113,7 @@ export default function CategoriesListbox({
                         <span
                           className={classNames(
                             selected ? 'font-medium' : 'font-normal',
-                            'block truncate capitalize'
+                            'block truncate'
                           )}
                         >
                           {category}
