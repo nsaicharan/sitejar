@@ -51,11 +51,11 @@ function BookmarksList({ filteredBookmarks, bookmarksPerPage, currentPage }) {
                 {bookmark.title || bookmark.url}
               </Link>
 
-              {bookmark.notes && (
+              {bookmark.description && (
                 <p
                   className="mt-1.5"
                   dangerouslySetInnerHTML={{
-                    __html: bookmark.notes.replaceAll('\n', '<br>'),
+                    __html: bookmark.description.replaceAll('\n', '<br>'),
                   }}
                 ></p>
               )}

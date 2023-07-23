@@ -75,7 +75,7 @@ export function BookmarksProvider({ children }) {
     }
   }
 
-  async function addBookmark({ url, title, category, notes }) {
+  async function addBookmark({ url, title, description, category }) {
     const collectionRef = collection(db, `users/${user.id}/bookmarks`);
     let trimmedCategory = category.trim().toLowerCase();
     if (!trimmedCategory || trimmedCategory === 'all')
@@ -84,13 +84,13 @@ export function BookmarksProvider({ children }) {
     await addDoc(collectionRef, {
       url: url.trim(),
       title: title.trim(),
+      description: description.trim(),
       category: trimmedCategory,
-      notes: notes.trim(),
       createdAt: serverTimestamp(),
     });
   }
 
-  async function updateBookmark({ id, url, title, category, notes }) {
+  async function updateBookmark({ id, url, title, description, category }) {
     const docRef = doc(db, `users/${user.id}/bookmarks/${id}`);
     let trimmedCategory = category.trim().toLowerCase();
     if (!trimmedCategory || trimmedCategory === 'all')
@@ -101,8 +101,8 @@ export function BookmarksProvider({ children }) {
       {
         url: url.trim(),
         title: title.trim(),
+        description: description.trim(),
         category: trimmedCategory,
-        notes: notes.trim(),
       },
       { merge: true }
     );

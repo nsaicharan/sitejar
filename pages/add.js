@@ -13,7 +13,7 @@ function Add({ user }) {
   const [saving, setSaving] = useState(false);
   const { existingCategories, addBookmark } = useBookmarks();
   const router = useRouter();
-  const { url, title } = router.query;
+  const { url, title, description } = router.query;
 
   useEffect(() => {
     if (!user) signIn('google');
@@ -24,11 +24,17 @@ function Add({ user }) {
     if (saving) return;
     setSaving(true);
 
-    const { url, title, category, notes } = Object.fromEntries(
+    const { url, title, category, description } = Object.fromEntries(
       new FormData(e.target)
     );
-    await addBookmark({ url, title, category, notes });
 
+    if (!url && !title && !description) {
+      setSaving(false);
+      alert('Please fill at least one field out of URL, Title, Description.');
+      return;
+    }
+
+    await addBookmark({ url, title, category, description });
     router.push('/view');
   }
 
@@ -67,6 +73,17 @@ function Add({ user }) {
             </label>
 
             <label>
+              <span className="text-gray-700">Description</span>
+              <textarea
+                type="text"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                rows="2"
+                name="description"
+                defaultValue={description}
+              />
+            </label>
+
+            <label>
               <span className="text-gray-700">Category</span>
               <div className="relative">
                 <input
@@ -84,16 +101,6 @@ function Add({ user }) {
                 <option key={category} value={category} />
               ))}
             </datalist>
-
-            <label>
-              <span className="text-gray-700">Additional Notes</span>
-              <textarea
-                type="text"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                rows="2"
-                name="notes"
-              />
-            </label>
 
             <div className="mt-1.5 flex gap-5">
               <button className="flex py-[9px] px-4 rounded bg-indigo-600 text-white text-center shadow-sm outline-none focus:ring focus:ring-indigo-200">

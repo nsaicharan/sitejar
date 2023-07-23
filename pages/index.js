@@ -5,6 +5,9 @@ import Link from 'next/link';
 import Layout from './../components/Layout';
 
 function Home() {
+  // prettier-ignore
+  const bookmarklet = 'javascript:void(window.location.href=`https://sitejar.vercel.app/add?url=${document.URL}&title=${document.title}&description=${document.querySelector("meta[name=description]")?.content || ""}`)';
+
   return (
     <Layout user={null}>
       <section className="m-auto max-w-3xl lg:max-w-full lg:flex lg:items-center lg:gap-7 xl:gap-10">
@@ -35,13 +38,13 @@ function Home() {
             >
               Start saving now
             </Link>{' '}
-            or drag this{' '}
+            or drag this
             <a
               className="my-1 inline-block py-[7px] px-3 rounded border border-dashed border-current bg-indigo-50 text-indigo-600"
-              href="javascript:void(window.location.href='https://sitejar.vercel.app/add?url='+document.URL+'&title='+document.title)"
+              href={bookmarklet}
             >
               Sitejar
-            </a>{' '}
+            </a>
             bookmarklet to your bookmarks bar and click it whenever you want to
             save something.
           </p>

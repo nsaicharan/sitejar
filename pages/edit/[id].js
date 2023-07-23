@@ -16,7 +16,7 @@ function Edit({ user }) {
     url: '',
     title: '',
     category: '',
-    notes: '',
+    description: '',
   });
   const [notFound, setNotFound] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -32,8 +32,8 @@ function Edit({ user }) {
     const bookmarkData = bookmarks.filter((b) => b.id === id);
 
     if (bookmarkData.length) {
-      const { url, title, category, notes } = bookmarkData[0];
-      setData({ url, title, category, notes });
+      const { url, title, category, description } = bookmarkData[0];
+      setData({ url, title, category, description });
     } else {
       setNotFound(true);
     }
@@ -43,6 +43,12 @@ function Edit({ user }) {
     e.preventDefault();
     if (saving) return;
     setSaving(true);
+
+    if (!data.url && !data.title && !data.description) {
+      setSaving(false);
+      alert('Please fill at least one field out of URL, Title, Description.');
+      return;
+    }
 
     await updateBookmark({ id, ...data });
     router.push('/view');
@@ -94,6 +100,18 @@ function Edit({ user }) {
             </label>
 
             <label>
+              <span className="text-gray-700">Description</span>
+              <textarea
+                type="text"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                rows="2"
+                name="description"
+                value={data.description}
+                onChange={handleChange}
+              />
+            </label>
+
+            <label>
               <span className="text-gray-700">Category</span>
               <div className="relative">
                 <input
@@ -113,18 +131,6 @@ function Edit({ user }) {
                 <option key={category} value={category} />
               ))}
             </datalist>
-
-            <label>
-              <span className="text-gray-700">Additional Notes</span>
-              <textarea
-                type="text"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                rows="2"
-                name="notes"
-                value={data.notes}
-                onChange={handleChange}
-              />
-            </label>
 
             <div className="mt-1.5 flex gap-5">
               <button className="flex py-[9px] px-4 rounded bg-indigo-600 text-white text-center shadow-sm outline-none focus:ring focus:ring-indigo-200">

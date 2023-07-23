@@ -41,7 +41,7 @@ function Bookmarks({ user }) {
     const hasTerm =
       b.url.toLowerCase().includes(searchTerm) ||
       b.title.toLowerCase().includes(searchTerm) ||
-      b.notes.toLowerCase().includes(searchTerm);
+      b.description.toLowerCase().includes(searchTerm);
 
     if (selectedCategory === 'all') {
       return hasTerm;
@@ -57,8 +57,10 @@ function Bookmarks({ user }) {
 
         <div className="mt-6 flex gap-6">
           <div className="flex-1">
-            <label for="search" className="block text-xs mb-2">Search (press "/" to focus)</label>
-            
+            <label htmlFor="search" className="block text-xs mb-2">
+              Search (press "/" to focus)
+            </label>
+
             <div className="relative">
               <input
                 type="search"
@@ -68,7 +70,7 @@ function Bookmarks({ user }) {
                 onChange={handleSearch}
                 ref={searchRef}
               />
-  
+
               <span className="absolute inset-y-0 pl-3.5 flex items-center pointer-events-none">
                 <svg
                   viewBox="0 0 20 20"
