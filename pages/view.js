@@ -55,7 +55,7 @@ function Bookmarks({ user }) {
       <section className="w-full max-w-4xl mx-auto">
         <h1 className="text-2xl text-slate-900 font-bold">Your bookmarks</h1>
 
-        <div className="mt-6 flex gap-6">
+        <div className="mt-6 flex gap-4 md:gap-6">
           <div className="flex-1">
             <label htmlFor="search" className="block text-xs mb-2">
               Search (press "/" to focus)

@@ -13,7 +13,7 @@ export default function CategoriesListbox({
   return (
     <Listbox value={selectedCategory} onChange={setSelectedCategory}>
       {({ open }) => (
-        <div className="w-[180px]">
+        <div className="w-[150px] md:w-[180px]">
           <div className="relative">
             <div>
               <Listbox.Label className="block text-xs mb-2">
@@ -48,7 +48,7 @@ export default function CategoriesListbox({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-xs md:text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <Listbox.Option
                   className={({ active }) =>
                     classNames(
